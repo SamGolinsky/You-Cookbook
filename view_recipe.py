@@ -71,15 +71,21 @@ class ViewRecipe:
         self.scale_select = ttk.Combobox(self.frame, textvariable=self.scaleVar)
         self.scale_select['values'] = scale_values
         self.scale_select.current(3)
-        self.scale_select.grid(row=2, column=1, sticky='e')
+        self.scale_select.grid(row=3, column=1, sticky='e')
 
-        self.scaleBtn = tk.Button(self.frame, text='Scale!', command=self.__scale).grid(row=2, column=2, sticky='w')
+        self.yieldLbl = tk.Label(self.frame, text=f'Yield: {self.fam_data[self.yield_index+1]}').grid(row=2, column=0,
+                                                                                                      columnspan=2)
+        self.cooktimeLbl = tk.Label(self.frame,
+                                    text=f'Cook Time: {self.fam_data[self.cooktime_index+1]}').grid(row=2, column=2,
+                                                                                                    columnspan=2)
 
-        self.reviewBtn = tk.Button(self.frame, text="Continue", command=self.__review).grid(row=len(row_num) + 2, column=0
-                                                                                          , columnspan=6)
+        self.scaleBtn = tk.Button(self.frame, text='Scale!', command=self.__scale).grid(row=3, column=2, sticky='w')
+
+        self.reviewBtn = tk.Button(self.frame, text="Continue", command=self.__review).grid(row=len(row_num) + 2,
+                                                                                            column=0, columnspan=6)
         self.grow_pageLbl = tk.Label(self.frame, text='').grid(row=len(row_num) + 3, column=0)
 
-        self.ingredientLbl = tk.Label(self.frame, text="Ingredients").grid(row=1, column=0, columnspan=3)
+        self.ingredientLbl = tk.Label(self.frame, text="Ingredients").grid(row=2, column=0, columnspan=3)
         self.nums = []
         self.units = []
         for i in range(self.ingredient_index + 1, self.process_index):
@@ -120,7 +126,7 @@ class ViewRecipe:
             self.units.append(unit_str)
             self.__scale()
             self.ingredient_viewLbl = tk.Label(self.frame, text=f"{ingredient_str}").grid(
-                row=(2 + i - self.ingredient_index),
+                row=(3 + i - self.ingredient_index),
                 column=2, sticky='w')
 
         self.processLbl = tk.Label(self.frame, text="Process").grid(row=1, column=3, columnspan=3)
@@ -167,17 +173,17 @@ class ViewRecipe:
         multiplier = self.scaleVar.get()
         if multiplier != '':
             multiplier = float(multiplier)
-            multiplier = multiplier * ss.fam_scale(self.fam_data)
+            # multiplier = multiplier * ss.fam_scale(self.fam_data) # Fam member scaling
             i = self.ingredient_index + 1
             j = 0
             for num in self.nums:
                 scaled_num, scaled_unit = ss.scale(num, multiplier, self.units[j])
                 self.numLbl = tk.Label(self.frame, text=f"{scaled_num}", bg='SystemButtonFace').grid(
-                    row=(2 + i - self.ingredient_index), column=0, sticky='we')
+                    row=(3 + i - self.ingredient_index), column=0, sticky='we')
                 self.unitLbl = tk.Label(self.frame, text="", bg='SystemButtonFace').grid(
-                    row=(2 + i - self.ingredient_index), column=1, sticky='we')
+                    row=(3 + i - self.ingredient_index), column=1, sticky='we')
                 self.unitLbl = tk.Label(self.frame, text=f"{scaled_unit}", bg='SystemButtonFace').grid(
-                    row=(2 + i - self.ingredient_index), column=1, sticky='w')
+                    row=(3 + i - self.ingredient_index), column=1, sticky='w')
                 i += 1
                 j += 1
 

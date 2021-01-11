@@ -34,7 +34,6 @@ class ReviewRecipe:
             self.fam_file.close()
             self.frame.destroy()
             er.RecipeSelect(self.master, self.family)
-            print('Already Reviewed')
 
     def __good(self):
         self.fam_file = open(f"{self.family}", "w+")
