@@ -30,6 +30,12 @@ class ReviewRecipe:
         self.mehBtn = tk.Button(self.frame, text='Meh', command=self.__meh).grid(row=1, column=1)
         self.badBtn = tk.Button(self.frame, text='Bad', command=self.__bad).grid(row=1, column=2)
 
+        if self.fam_data[self.name_index][-3] == ':':
+            self.fam_file.close()
+            self.frame.destroy()
+            er.RecipeSelect(self.master, self.family)
+            print('Already Reviewed')
+
     def __good(self):
         self.fam_file = open(f"{self.family}", "w+")
         self.fam_data[self.name_index] = self.fam_data[self.name_index][:-1] + ' :)\n'

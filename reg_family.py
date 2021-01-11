@@ -8,7 +8,7 @@ from center_window import *
 class RegisterFamily:
     def __init__(self, master):
         self.master = master
-        self.master.geometry('250x210')
+        self.master.geometry('250x215')
         center(self.master)
         self.frame = tk.Frame(self.master)
         self.frame.grid(row=0, column=0)
@@ -82,6 +82,8 @@ class IndividualPerson:
     def __init__(self, master, frame, num, name):
         self.frame = frame
         self.master = master
+        self.master.geometry('505x710')
+        center(self.master)
         self.famNum = num
         self.famName = name
 

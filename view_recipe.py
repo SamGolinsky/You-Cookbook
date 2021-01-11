@@ -8,8 +8,8 @@ scale_values = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3, 3.5, 4, 4.5, 5,
                 6, 7, 8, 9, 10, 15, 20, 25, 30, 40, 50]
 measurement_units = ['teaspoon', 'teaspoons', 't', 'tsp', 'tablespoon', 'tablespoons', 'tbs', 'tbsp', 'fluid ounce',
                      'fluid ounces', 'fl oz', 'gill', 'gills', 'cup', 'cups', 'pint', 'pints', 'pt', 'quart', 'quarts',
-                     'qt', 'gallon', 'gallons', 'gal', 'ml', 'l', 'dl', 'pound', 'pounds', 'lb', 'ounce', 'ounces',
-                     'oz', 'mg', 'g', 'kg', 'mm', 'cm', 'm', 'inch', 'in', '"']
+                     'qt', 'gallon', 'gallons', 'gal', 'ml', 'l', 'dl', 'pound', 'pounds', 'lb', 'lbs', 'ounce',
+                     'ounces', 'oz', 'mg', 'g', 'kg', 'mm', 'cm', 'm', 'inch', 'in', '"']
 
 
 class ViewRecipe:
@@ -46,18 +46,19 @@ class ViewRecipe:
         for i in range(1 + self.process_index, self.cooktime_index):
             for word in self.fam_data[i].split():
                 for char in word:
-                    if char == '.':
+                    if char == '.' and not(48 <= ord(word[0]) <= 57):
                         row_num.append(count)
                         count += 1
-            row_num.append(count)
-            count += 1
+            if self.fam_data[i].split():
+                row_num.append(count)
+                count += 1
         self.frame = tk.Frame(self.master)
         self.frame.grid(row=0, column=0)
         self.frame.grid_rowconfigure((row_num + [len(row_num) + 1]), minsize=20)
         self.frame.grid_columnconfigure([0, 1, 2, 3], minsize=80)
-        self.master.geometry(f'{self.master.winfo_screenwidth()}x{self.master.winfo_screenheight()-40}')
-        # (3 + len(row_num)) * 20
-        center(self.master)
+        self.master.geometry('')
+        # self.master.geometry(f'{self.master.winfo_screenwidth()}x{self.master.winfo_screenheight()-40}')
+        # center(self.master)
 
         self.processFrame = tk.Frame(self.frame)
         self.processFrame.grid(row=2, column=4, rowspan=(len(row_num)))
@@ -74,8 +75,9 @@ class ViewRecipe:
 
         self.scaleBtn = tk.Button(self.frame, text='Scale!', command=self.__scale).grid(row=2, column=2, sticky='w')
 
-        self.reviewBtn = tk.Button(self.frame, text="Review", command=self.__review).grid(row=len(row_num) + 2, column=0
+        self.reviewBtn = tk.Button(self.frame, text="Continue", command=self.__review).grid(row=len(row_num) + 2, column=0
                                                                                           , columnspan=6)
+        self.grow_pageLbl = tk.Label(self.frame, text='').grid(row=len(row_num) + 3, column=0)
 
         self.ingredientLbl = tk.Label(self.frame, text="Ingredients").grid(row=1, column=0, columnspan=3)
         self.nums = []
@@ -160,8 +162,6 @@ class ViewRecipe:
                     row_index += 1
             if len(process_data) != 0:
                 count += 1
-
-
 
     def __scale(self):
         multiplier = self.scaleVar.get()
